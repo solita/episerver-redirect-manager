@@ -1,0 +1,3 @@
+﻿Insert hard coded custom localizations here. The folder must exist on server.
+
+Do not remove this file. Git doesn't persist empty folders.

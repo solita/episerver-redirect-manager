@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<languages>
+  
+  <language id="en" name="English">
+    <RedirectManager>
+      <title>Redirect manager</title>
+    </RedirectManager>
+  </language>
+  
+  <language id="fi" name="Suomi">
+    <RedirectManager>
+      <title>Uudelleenohjaustyökalu</title>
+    </RedirectManager>
+  </language>
+  
+</languages>

@@ -1,0 +1,22 @@
+﻿<div class="epi-form-container__section__row epi-form-container__section__row--field ur-common-header">
+    <label class="w-auto v-top">Old URL</label>
+    <sol-dojo-textbox class="ur-textbox-wide v-top"
+                      ng-model="$parent.requestUrl"
+                      validation-exp="^((https?:\\/\\/)?([a-z\\d\\-\\.]*)?(\\/.*))$"
+                      validation-msg="Invalid address"></sol-dojo-textbox>
+    <sol-dojo-checkbox class="v-top" ng-model="$parent.isWildcard">Address body</sol-dojo-checkbox>
+    <label class="w-auto Pl-md v-top">New URL</label>
+    <div class="inline-block">
+        <sol-dojo-textbox class="ur-textbox-wide"
+                          ng-model="$parent.redirectUrl"
+                          readonly="{{ $parent.redirectPage }}"
+                          validation-exp="^(https?:\\/\\/|\\/).*"
+                          validation-msg="Invalid address"></sol-dojo-textbox>
+        <div>
+            <label class="w-auto f-normal inline-block Mt-5">Search address</label>
+            <sol-dojo-content class="Pl-md" content-type="page" ng-model="$parent.redirectPage" ng-change="$parent.updateRedirect()" allowed-roots="1"></sol-dojo-content>
+        </div>
+    </div>
+    <sol-dojo-checkbox class="v-top" ng-model="$parent.preservePath" readonly="{{ !$parent.isWildcard || '' }}">Add address suffix</sol-dojo-checkbox>
+    <sol-dojo-button class="Pl-md v-top" icon-class="epi-addIcon" ng-click="$parent.addRedirect()">Add new</sol-dojo-button>
+</div>

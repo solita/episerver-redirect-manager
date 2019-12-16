@@ -1,0 +1,87 @@
+﻿@inherits System.Web.Mvc.WebViewPage<Solita.RedirectManager.Models.RedirectManagerViewModel>
+
+@using EPiServer.Framework.Web.Resources
+@using EPiServer.Shell
+@using EPiServer.Shell.Navigation
+@using EPiServer.Shell.Web.Mvc.Html
+@using Solita.RedirectManager.Common
+
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>@Html.Translate("/RedirectManager/title")</title>
+
+        @* CDN scripts *@
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-resource.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
+        @* local scripts *@
+        <script src="@ModuleUtil.PathTo("static/js/redirectManager.js")"></script>
+        @* Solita Dojo wrapper *@
+        <script src="@ModuleUtil.PathTo("static/SolDojoWrapper/js/SolDojoWrapper.js")"></script>
+        <script>angular.module('Solita.DojoWrapper').value('SolDojoBasePath', '@ModuleUtil.PathTo("static/SolDojoWrapper")')</script>
+        @* Shell *@
+        @Html.Raw(ClientResources.RenderResources("ShellCore"))
+        @Html.Raw(ClientResources.RenderResources("ShellWidgets"))
+        @* LightTheme *@
+        @Html.Raw(ClientResources.RenderResources("ShellCoreLightTheme"))
+        @* Navigation *@
+        @Html.Raw(ClientResources.RenderResources("Navigation"))
+        @* Dojo Dashboard *@
+        @Html.Raw(ClientResources.RenderResources("DojoDashboardCompatibility"))
+        @* Sleek theme *@
+        <link rel="stylesheet" href="@Paths.ToShellClientResource("clientresources/epi/themes/sleek/sleek1.css")" type="text/css" />
+        @* local styles *@
+        <link rel="stylesheet" href="@ModuleUtil.PathTo("static/css/redirectManager.css")" type="text/css">
+
+        @* setup dojoConfig, parseOnLoad is set to false *@
+        @Html.Raw(DojoConfigurationHelper.ConfigureDojo(null, false, true, true))
+        @* load Dojo itself and a small collection of bundled EPi-specific classes *@
+        <script type="text/javascript" src="@Paths.ToShellClientResource("clientresources/dojo/dojo.js")"></script>
+        <script type="text/javascript" src="@Paths.ToShellClientResource("clientresources/epi/epi.js")"></script>
+
+        <base href="@Request.RawUrl" />
+    </head>
+
+    <body class="Sleek" ng-app="EpiUrlRedirect">
+        <div id="epi-globalDocument">
+            @Html.Raw(Html.GlobalMenu())
+            @* initialize Dojo wrapper *@
+            <sol-dojo-initialization init-settings="@Html.SerializeObject(ModuleUtil.GetModuleSettings(), "application/json")"></sol-dojo-initialization>
+            @* main content div *@
+            <div ng-controller="UrlRedirectController" ng-init="init({
+                    tabs: [
+                        { title: 'Redirections', template: '@ModuleUtil.PathTo("static/templates/_redirects.html")' },
+                        { title: 'Events', template: '@ModuleUtil.PathTo("static/templates/_events.html")' },
+                        { title: '404 errors', template: '@ModuleUtil.PathTo("static/templates/_404errors.html")' }
+                    ],
+                    apiBaseUrl: '@Url.Action(null, "RewriteMappings")'
+                })">
+                @* Dojo loader mask *@
+                <div id="dojo-loader" ng-hide="dojoLoaded"><div class="loader">Loading...</div></div>
+                @* tab titles *@
+                <div class="dijitTabListContainer-top dijitTabController">
+                    <div class="dijitTabListWrapper dijitTabContainerTopNone o-hidden">
+                        <div class="nowrapTabStrip dijitTabContainerTop-tabs dijitTabNoLayout" role="tablist">
+                            <div ng-repeat="tab in tabs"
+                                 ng-click="selectTab($index)"
+                                 ng-class="{ 'dijitTabChecked dijitChecked': selectedTab === $index }"
+                                 class="dijitTabInner dijitTabContent dijitTab">{{ tab.title }}</div>
+                        </div>
+                    </div>
+                </div>
+                @* tab contents *@
+                <div class="ur-tab-container">
+                    <div class="ur-tab-content bbox" ng-include="'@ModuleUtil.PathTo("static/templates/_common-header.html")'"></div>
+                    <div ng-repeat="tab in tabs" class="ur-tab-content bbox ng-hide" ng-show="selectedTab === $index">
+                        <div ng-include="tab.template"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

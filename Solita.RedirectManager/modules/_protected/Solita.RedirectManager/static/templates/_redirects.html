@@ -1,0 +1,58 @@
+﻿<h1>Redirections</h1>
+<div class="epi-form-container__section__row epi-form-container__section__row--field">
+    <label for="redirectFilter" title="Show only a part of the redirections" class="w-auto">Filter redirections</label>
+    <sol-dojo-textbox ng-model="$parent.redirectFilter" ng-keyup="$parent.redecorate()"></sol-dojo-textbox>
+</div>
+<div class="epi-form-container__section__row epi-form-container__section__row--field">
+    <label class="w-auto">Read a CSV-file</label>
+    <input type="file" id="csvInput" />
+    <sol-dojo-button icon-class="epi-iconPublished" ng-click="readCsv()">Upload</sol-dojo-button>
+    <div class="inline-block Pl-md">
+        <a href="javascript:void(0)" ng-click="showCsvInstructions = !showCsvInstructions">
+            <span class="dijitReset dijitInline dijitIcon epi-iconInfo"></span>
+            <span class="underline" style="font-size:90%">{{ !showCsvInstructions ? 'Show instructions' : 'Hide instructions' }}</span>
+        </a>
+    </div>
+    <div class="ur-csv-instructions" ng-show="showCsvInstructions">
+        <div>
+            <strong>Instructions:</strong> The CSV-file should have four columns. In the first column "Old URL", in the second "New URL",
+            in the third "Address body" and the fourth "Add the suffix". "Address body" and the "Add the suffix" will be evaluated true
+            if they contain something, false if they are empty.
+        </div>
+    </div>
+    <div class="ur-csv-errors" ng-show="csvErrors">
+        <div>
+            <span class="dijitReset dijitInline dijitIcon epi-iconWarning inline-block"></span>
+            The following errors occured while reading the CSV-file:
+            <ul>
+                <li ng-repeat="error in csvErrors" ng-bind="error"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<table class="ur-main-table ur-table w-full">
+    <thead>
+        <tr>
+            <th>Old URL</th>
+            <th class="text-center w-130">Address body</th>
+            <th>New URL or page</th>
+            <th class="text-center w-130">Add the suffix</th>
+            <th class="text-center">Created</th>
+            <th class="text-center">Last Used</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="redirect in currentRedirects | filter:redirectFilter">
+            <td>{{ redirect.RequestPath ? (redirect.RequestHost || '') + redirect.RequestPath : redirect.RequestUrl }}</td>
+            <td class="text-center w-130"><div ng-show="redirect.IsWildcard" class="dijitReset dijitIcon epi-iconCheckmark inline-block"></div></td>
+            <td>{{ redirect.RedirectUrl }}</td>
+            <td class="text-center w-130"><div ng-show="redirect.PreservePath" class="dijitReset dijitIcon epi-iconCheckmark inline-block"></div></td>
+            <td class="text-center">{{ redirect.CreatedAt | date : 'd.M.yyyy' }}</td>
+            <td class="text-center">{{ redirect.LastUsed | date : 'd.M.yyyy' }}</td>
+            <td>
+                <sol-dojo-button icon-class="epi-deleteIcon" class="right" ng-click="deleteRedirect(redirect.Id, $index)">Delete</sol-dojo-button>
+            </td>
+        </tr>
+    </tbody>
+</table>
