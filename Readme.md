@@ -1,5 +1,5 @@
 # Redirect Manager
-[![Build Status](https://dev.azure.com/solita-episerver-opensource/episerver-redirect-manager/_apis/build/status/solita-yusuftiryaki.episerver-redirect-manager?branchName=master)](https://dev.azure.com/solita-episerver-opensource/episerver-redirect-manager/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://solita-episerver-public.visualstudio.com/episerver-redirect-manager/_apis/build/status/solita-yusuftiryaki.episerver-redirect-manager%20(1)?branchName=master)](https://solita-episerver-public.visualstudio.com/episerver-redirect-manager/_build/latest?definitionId=6&branchName=master)
 
 Redirect Manager is an Episerver CMS helper utility to define url redirections and manage them with a graphical user interface
 Redirect Manager menu is available at CMS section for defined roles
